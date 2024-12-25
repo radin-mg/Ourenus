@@ -1,6 +1,7 @@
 import { Grid, useTheme } from "@mui/material";
 import BoxS from "./Box";
 import { useTranslation } from "react-i18next";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const LogoBox = () => {
   const theme = useTheme();
@@ -15,14 +16,7 @@ const LogoBox = () => {
         justifyContent="center"
         sx={{ padding: ".3rem", paddingX: ".5rem" }}
       >
-        <img
-          src={
-            import.meta.env.VITE_LOGO_SRC ||
-            "https://raw.githubusercontent.com/MatinDehghanian/public-assets/refs/heads/main/icons/uranus.svg"
-          }
-          alt="Logo"
-          style={{ width: "100%", height: "auto" }}
-        />
+        <Icon icon="emojione-v1:christmas-tree" width="100%" height="100%" />
       </Grid>
       <Grid
         item

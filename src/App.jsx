@@ -18,6 +18,8 @@ import {
 import { ToastContainer } from "react-toastify";
 import RadioButtons from "./components/RadioButtons";
 import { Helmet } from "react-helmet";
+import SnowEffect from "./christmas/SnowEffect";
+import Santa from "./christmas/Santa";
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -65,7 +67,6 @@ function App() {
       });
     }
   }, [data?.links]);
-
 
   const getAdjustedUrl = (subURL) => {
     if (import.meta.env.VITE_PANEL_DOMAIN) {
@@ -123,6 +124,7 @@ function App() {
           content="Powered by https://github.com/MatinDehghanian"
         />
       </Helmet>
+      <SnowEffect />
       <Grid container justifyContent={"center"}>
         <Grid
           container
@@ -152,6 +154,7 @@ function App() {
                   setIsDarkMode={setIsDarkMode}
                   handleLanguageChange={handleLanguageChange}
                 />
+                <Santa />
                 {isOffSections.logoBox && <LogoBox />}
                 {isOffSections.userBox && (
                   <UserBox

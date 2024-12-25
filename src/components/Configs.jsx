@@ -62,7 +62,7 @@ const Configs = ({
         justifyContent="space-between"
         xs={11}
         item
-        sx={{ paddingBottom: "1rem", ...isFirstPadding }}
+        sx={{ paddingBottom: "5rem", ...isFirstPadding }}
       >
         <Accordion sx={style}>
           <AccordionSummary

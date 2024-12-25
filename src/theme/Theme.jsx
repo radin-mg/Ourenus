@@ -88,13 +88,13 @@ const colors = {
     },
     background: {
       dark: "rgba(72, 76, 111, 1)",
-      light: commonColors.lightGray,
+      light: "rgba(255, 255, 255, 0.85)",
     },
-    slider: "rgba(143, 141, 179, 0.6)",
+    slider: "rgba(143, 141, 179, 0.8)",
   },
   box: {
     dark: "rgba(72, 76, 111, 1)",
-    light: commonColors.white,
+    light: "rgba(255, 255, 255, 0.85)",
     border: {
       dark: "",
       light: "1px solid rgba(255, 255, 255, 0.42)",
@@ -163,7 +163,7 @@ const colors = {
   },
   background: {
     dark: commonColors.darkGray,
-    light: commonColors.lightGray,
+    light: "#35a66f",
   },
 };
 

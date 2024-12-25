@@ -1,13 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Button, Grid, useTheme } from "@mui/material";
 import BoxS from "./Box";
-import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
-import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import QrModal from "./QrModal";
 import QrCodeOutlinedIcon from "@mui/icons-material/QrCodeOutlined";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const UserBox = ({ data, subLink }) => {
   const theme = useTheme();
@@ -86,14 +85,7 @@ const UserBox = ({ data, subLink }) => {
           justifyContent="center"
           sx={{ padding: ".3rem", paddingX: ".5rem" }}
         >
-          <SupervisedUserCircleIcon
-            fontSize="large"
-            sx={{
-              color: theme.colors.userBox.logoColor[theme.palette.mode],
-              width: "100%",
-              height: "auto",
-            }}
-          />
+          <Icon icon="fxemoji:fatherchristmas" width="auto" height="100%" />
         </Grid>
         <Grid
           item
@@ -194,7 +186,7 @@ const UserBox = ({ data, subLink }) => {
                     fontWeight: "lighter",
                   }}
                 >
-                  <QuestionAnswerOutlinedIcon />
+                  <Icon icon={"mingcute:christmas-hat-line"} width={"auto"} />
                   {t("support")}
                 </Button>
               </Grid>

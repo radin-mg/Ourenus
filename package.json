@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@iconify/react": "^5.1.0",
     "@mui/icons-material": "^6.1.1",
     "@mui/material": "^6.1.1",
     "axios": "^1.7.7",
@@ -25,6 +26,7 @@
     "react-spinners": "^0.14.1",
     "react-toastify": "^10.0.5",
     "rollup-plugin-obfuscator": "^1.1.0",
+    "sass": "^1.83.0",
     "vite-plugin-singlefile": "^2.0.2"
   },
   "devDependencies": {
