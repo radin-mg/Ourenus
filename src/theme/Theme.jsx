@@ -5,7 +5,7 @@ const commonColors = {
   black: "rgba(0, 0, 0, 1)",
   transparentWhite: "rgba(255, 255, 255, 0.3)",
   transparentBlack: "rgba(0, 0, 0, 0.1)",
-  darkGray: "rgba(38, 42, 62, 1)",
+  darkGray: "rgb(15, 17, 24)",
   lightGray: "rgba(243, 244, 254, 1)",
   lightPurple: "rgba(156, 39, 176, 1)",
   darkPurple: "rgba(106, 27, 154, 1)",
