@@ -53,6 +53,13 @@ const colors = {
     light: "rgba(72, 76, 112, 1)",
     dark: "rgba(117, 122, 166, 1)",
     priceBtn: {
+    Suggestion: {
+            btn: { dark: "rgba(26, 41, 39, 1)", light: "rgba(226, 241, 239, 1)" },
+            text: {
+              dark: "rgb(192, 178, 136)",
+              light: "rgb(185, 182, 108)",
+            },
+          },
       free: {
         btn: { dark: "rgba(26, 41, 39, 1)", light: "rgba(226, 241, 239, 1)" },
         text: {
