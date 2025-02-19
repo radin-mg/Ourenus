@@ -1,429 +1,246 @@
-import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Grid,
-  Typography,
-  Button,
-  useTheme,
-} from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { useTranslation } from "react-i18next";
-import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
-import errorLogo from "../assets/vite.svg";
-import { AdUnits, Checklist } from "@mui/icons-material";
-import TutorialModal from "./TutorialModal";
-import AppleIcon from "@mui/icons-material/Apple";
-import AndroidIcon from "@mui/icons-material/Android";
-import DesktopWindowsOutlinedIcon from "@mui/icons-material/DesktopWindowsOutlined";
-import CodeIcon from "@mui/icons-material/Code";
-import CancelPresentationOutlinedIcon from "@mui/icons-material/CancelPresentationOutlined";
+import { createTheme } from "@mui/material/styles";
 
-const getButtonStyles = (type, theme) => {
-  switch (type) {
-    case "download":
-      return {
-        backgroundColor:
-          theme === "dark"
-            ? "rgba(30, 144, 255, 0.5)"
-            : "rgba(35, 103, 181, 0.8)",
-        color: "#fff",
-      };
-    case "configuration":
-      return {
-        backgroundColor:
-          theme === "dark"
-            ? "rgba(76, 175, 80, 0.5)"
-            : "rgba(78, 191, 119, 0.8)",
-        color: "#fff",
-      };
-    case "watchVideo":
-      return {
-        backgroundColor:
-          theme === "dark"
-            ? "rgba(255, 193, 7, 0.5)"
-            : "rgba(255, 208, 75, 0.8)",
-        color: "#000",
-      };
-    default:
-      return {
-        backgroundColor:
-          theme === "dark"
-            ? "rgba(255, 87, 34, 0.5)"
-            : "rgba(255, 87, 34, 0.8)",
-        color: "#fff",
-      };
-  }
+const commonColors = {
+  white: "rgba(255, 255, 255, 1)",
+  black: "rgba(0, 0, 0, 1)",
+  transparentWhite: "rgba(255, 255, 255, 0.3)",
+  transparentBlack: "rgba(0, 0, 0, 0.1)",
+  darkGray: "rgba(38, 42, 62, 1)",
+  lightGray: "rgba(243, 244, 254, 1)",
+  lightPurple: "rgba(156, 39, 176, 1)",
+  darkPurple: "rgba(106, 27, 154, 1)",
 };
 
-const getOsIcon = (osName) => {
-  const icons = {
-    Windows: <DesktopWindowsOutlinedIcon fontSize="large" />,
-    Android: <AndroidIcon fontSize="large" />,
-    iOS: <AppleIcon fontSize="large" />,
-    Linux: <CodeIcon fontSize="large" />,
-    default: <CancelPresentationOutlinedIcon fontSize="large" />,
-  };
-  return icons[osName] || icons.default;
-};
-
-const getAccordionStyles = (theme) => ({
-  marginBottom: ".8rem",
-  background:
-    theme === "light" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
-  color: theme.colors.BWColorRevert.light,
-  "&.Mui-expanded": {
-    background:
-      theme === "light" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.3)",
+const colors = {
+  gradients: {
+    light: `linear-gradient(to right, ${commonColors.white}, rgba(52, 0, 79, 0.12))`,
+    dark: `linear-gradient(to right, rgba(34, 34, 34, 0.8), rgba(91, 7, 122, 0.1))`,
+    purpleLight: commonColors.lightPurple,
+    purpleDark: commonColors.darkPurple,
+    low: {
+      colors: {
+        light: ["rgba(255, 102, 102, 1)", "rgba(153, 0, 0, 1)"],
+        dark: ["rgba(255, 102, 102, .5)", "rgba(153, 0, 0, .9)"],
+      },
+      background: "rgba(214, 194, 35, 0.2)",
+      typographyGradient:
+        "linear-gradient(0deg, rgba(255, 102, 102, 1), rgba(153, 0, 0, 1))",
+    },
+    medium: {
+      colors: {
+        light: ["rgba(207, 110, 22, 1)", "rgba(255, 165, 0, 1)"],
+        dark: ["rgba(255, 255, 102, 0.4)"],
+      },
+      background: "rgba(214, 194, 35, 0.2)",
+      typographyGradient:
+        "linear-gradient(0deg, rgba(214, 194, 35, 1), rgba(255, 165, 0, 1))",
+    },
+    high: {
+      colors: {
+        light: ["rgba(144, 238, 144, 1)", "rgba(0, 100, 0, 1)"],
+        dark: ["rgba(144, 238, 144, 0.6)"],
+      },
+      background: "rgba(144, 238, 144, 0.2)",
+      typographyGradient:
+        "linear-gradient(0deg, rgba(144, 238, 144, 1), rgba(0, 100, 0, 1))",
+    },
   },
-});
-
-const renderButtonGrid = (
-  icon,
-  label,
-  theme,
-  t,
-  link,
-  app,
-  handleModalOpen,
-  shadowrocket
-) => {
-  if (label === "watchVideo") {
-    return (
-      <Grid
-        item
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={0.5}
-        width={"100%"}
-        sx={{
-          ...getButtonStyles(label, theme),
-          borderRadius: "1rem",
-          padding: 1,
-          cursor: "pointer",
-          "&:hover": {
-            background: "rgba(255, 255, 255, 0.4)",
-          },
-        }}
-        onClick={() => handleModalOpen(app)}
-      >
-        {icon}
-        <Typography fontSize={"smaller"} textAlign={"center"} noWrap>
-          {t(label)}
-        </Typography>
-      </Grid>
-    );
-  }
-
-  const openShadowrocketURL = (subLink) => {
-    const encodedURL = btoa(subLink);
-    const shadowrocketLink = "sub://" + encodedURL;
-    window.location.href = shadowrocketLink;
-  };
-
-  return (
-    <Grid
-      item
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      gap={0.5}
-      width={"100%"}
-      sx={{
-        ...getButtonStyles(label, theme),
-        borderRadius: "1rem",
-        padding: 1,
-        cursor: "pointer",
-        textDecoration: "none",
-        "&:hover": {
-          background: "rgba(255, 255, 255, 0.4)",
+  rgb: {
+    lightShadow: "rgba(0, 0, 0, 0.1)",
+    darkShadow: "rgba(255, 255, 255, 0.1)",
+  },
+  apps: {
+    light: "rgba(72, 76, 112, 1)",
+    dark: "rgba(117, 122, 166, 1)",
+    priceBtn: {
+      free: {
+        btn: { dark: "rgba(26, 41, 39, 1)", light: "rgba(226, 241, 239, 1)" },
+        text: {
+          dark: "rgba(136, 192, 166, 1)",
+          light: "rgba(108, 185, 173, 1)",
         },
-      }}
-      component={shadowrocket ? "div" : "a"}
-      target={!shadowrocket ? "_blank" : ""}
-      href={!shadowrocket ? link : ""}
-      onClick={shadowrocket ? () => openShadowrocketURL(shadowrocket) : undefined}
-    >
-      {icon}
-      <Typography fontSize={"smaller"} textAlign={"center"} noWrap>
-        {t(label)}
-      </Typography>
-    </Grid>
-  );
+      },
+      paid: {
+        btn: {
+          dark: "rgba(255, 25, 25, 0.65)",
+          light: "rgba(255, 25, 25, 0.65)",
+        },
+        text: { dark: commonColors.white, light: commonColors.white },
+      },
+      ad: {
+        btn: {
+          dark: "rgba(255, 255, 255, 0.65)",
+          light: "rgba(255, 255, 255, 0.65)",
+        },
+        text: { dark: commonColors.black, light: commonColors.black },
+      },
+    },
+  },
+  configs: {
+    light: commonColors.white,
+    dark: "rgba(72, 76, 122, 1)",
+    revert: {
+      dark: commonColors.white,
+      light: "rgba(72, 76, 122, 1)",
+    },
+  },
+  capsuleBtn: {
+    active: {
+      dark: commonColors.white,
+      light: "rgba(82, 88, 125, 1)",
+    },
+    notActive: {
+      dark: commonColors.white,
+      light: "rgba(121, 124, 146, 1)",
+    },
+    background: {
+      dark: "rgba(72, 76, 111, 1)",
+      light: commonColors.lightGray,
+    },
+    slider: "rgba(143, 141, 179, 0.6)",
+  },
+  box: {
+    dark: "rgba(72, 76, 111, 1)",
+    light: commonColors.white,
+    border: {
+      dark: "",
+      light: "1px solid rgba(255, 255, 255, 0.42)",
+    },
+  },
+  userBox: {
+    statusBtn: {
+      btn: {
+        active: {
+          dark: "rgba(26, 41, 39, 1)",
+          light: "rgba(226, 241, 239, 1)",
+        },
+        expired: {
+          dark: "rgba(102, 0, 0, 1)",
+          light: "rgba(255, 153, 153, 1)",
+        },
+        onHold: {
+          dark: "rgba(76, 0, 153, 1)",
+          light: "rgba(204, 153, 255, 1)",
+        },
+        disabled: {
+          dark: "rgba(34, 34, 34, 1)",
+          light: "rgba(128, 128, 128, 1)",
+        },
+      },
+      text: {
+        active: {
+          dark: "rgba(136, 192, 166, 1)",
+          light: "rgba(108, 185, 173, 1)",
+        },
+        expired: {
+          dark: "rgba(255, 255, 255, 1)",
+          light: "rgba(255, 255, 255, 1)",
+        },
+        onHold: {
+          dark: "rgba(255, 255, 255, 1)",
+          light: "rgba(255, 255, 255, 1)",
+        },
+        disabled: {
+          dark: "rgba(255, 255, 255, 1)",
+          light: "rgba(77, 77, 77, 1)",
+        },
+      },
+    },
+    logoColor: {
+      dark: "rgba(192, 192, 192, 1)",
+      light: "rgba(83, 72, 141, 1)",
+    },
+    supportBox: {
+      dark: "rgba(25, 40, 160, 1)",
+      light: "rgba(50, 77, 221, 1)",
+    },
+  },
+  glassColor: commonColors.transparentWhite,
+  BWColor: {
+    light: commonColors.black,
+    dark: commonColors.white,
+  },
+  BWColorRevert: {
+    light: commonColors.white,
+    dark: commonColors.black,
+  },
+  grayColor: {
+    light: "rgba(84, 84, 84, 1)",
+    dark: "rgba(204, 204, 204, 1)",
+  },
+  background: {
+    dark: commonColors.darkGray,
+    light: commonColors.lightGray,
+  },
 };
 
-const renderAppAccordion = (
-  app,
-  index,
-  lang,
-  theme,
-  t,
-  subLink,
-  handleModalOpen
-) => {
-  return (
-    <Accordion key={index} sx={getAccordionStyles(theme)}>
-      <AccordionSummary
-        expandIcon={
-          <ArrowDropDownIcon
-            sx={{ color: theme.colors.BWColorRevert[theme.palette.mode] }}
-          />
-        }
-        aria-controls={`panel-${app.name}-content`}
-        id={`panel-${app.name}-header`}
-      >
-        <Grid container alignItems="center" justifyContent="space-around">
-          <Grid
-            item
-            xs={1}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <img
-              src={app.logo}
-              alt={`${app.name} logo`}
-              style={{ width: "30px", height: "auto", borderRadius: "20%" }}
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = errorLogo;
-              }}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={10}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography>{app.name}</Typography>
-            {app.price !== "-1" && (
-              <Button
-                variant="contained"
-                color="textSecondary"
-                sx={{
-                  borderRadius: "50px",
-                  backgroundColor:
-                    app.price === "0"
-                      ? theme.colors.apps.priceBtn.free.btn[theme.palette.mode]
-                      : app.isAd
-                      ? theme.colors.apps.priceBtn.ad.btn[theme.palette.mode]
-                      : app.price === "suggestion"
-                      ? theme.colors.apps.priceBtn.suggestion.btn[
-                          theme.palette.mode
-                        ]
-                      : theme.colors.apps.priceBtn.paid.btn[theme.palette.mode],
-                  color:
-                    app.price === "0"
-                      ? theme.colors.apps.priceBtn.free.text[theme.palette.mode]
-                      : app.isAd
-                      ? theme.colors.apps.priceBtn.ad.text[theme.palette.mode]
-                      : app.price === "suggestion"
-                      ? theme.colors.apps.priceBtn.suggestion.text[
-                          theme.palette.mode
-                        ]
-                      : theme.colors.apps.priceBtn.paid.text[
-                          theme.palette.mode
-                        ],
-                  textTransform: "capitalize",
-                  boxShadow: "0 0 3px 0px #99bbaf",
-                }}
-              >
-                {app.price === "0"
-                  ? t("free")
-                  : app.isAd
-                  ? t("ad")
-                  : app.price === "suggestion"
-                  ? t("suggestion")
-                  : `${app.price} $`}
-              </Button>
-            )}
-          </Grid>
-        </Grid>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Grid container direction="column" gap={".7rem"} alignItems={"center"}>
-          <Typography sx={{ paddingBottom: "1rem" }}>
-            {lang === "fa" ? app.faDescription : app.description}
-          </Typography>
-          {app.downloadLink &&
-            !app.isAd &&
-            renderButtonGrid(
-              <ArrowCircleDownIcon fontSize="medium" />,
-              "download",
-              theme,
-              t,
-              app.downloadLink
-            )}
-          {app.isAd &&
-            renderButtonGrid(
-              <AdUnits fontSize="medium" />,
-              app.adBtnText,
-              theme,
-              t,
-              app.downloadLink
-            )}
-          {app.configLink &&
-            renderButtonGrid(
-              <AddCircleOutlineIcon fontSize="medium" />,
-              "configuration",
-              theme,
-              t,
-              app.configLink.replace("{url}", subLink),
-              null,
-              null,
-              app.name === "Shadowrocket" ? subLink : null
-            )}
-          {app.tutorialSteps?.length > 0 &&
-            renderButtonGrid(
-              <PlayCircleFilledWhiteOutlinedIcon fontSize="medium" />,
-              "watchVideo",
-              theme,
-              t,
-              null,
-              app,
-              handleModalOpen
-            )}
-        </Grid>
-      </AccordionDetails>
-    </Accordion>
-  );
-};
+const getTheme = (isDarkMode) =>
+  createTheme({
+    palette: {
+      mode: isDarkMode ? "dark" : "light",
+      background: {
+        default: isDarkMode ? colors.background.dark : colors.background.light,
+        paper: "transparent",
+      },
+    },
+    components: {
+      MuiAccordion: {
+        styleOverrides: {
+          root: {
+            backdropFilter: "blur(8px)",
+            borderRadius: "16px !important",
+            border: isDarkMode ? "1px solid rgba(255, 255, 255, 0.42)" : "",
+            color: isDarkMode ? commonColors.black : commonColors.white,
+            fontWeight: "bold",
+            fontFamily: "'Vazirmatn', sans-serif",
+            "&:before": {
+              display: "none",
+            },
+          },
+        },
+      },
 
-const Apps = ({ subLink }) => {
-  const { t, i18n } = useTranslation();
-  const [operatingSystems, setOperatingSystems] = useState([]);
-  const lang = i18n.language;
-  const theme = useTheme();
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: "50px",
+            fontFamily: "'Vazirmatn', sans-serif",
+          },
+        },
+      },
+      MuiListItem: {
+        styleOverrides: {
+          root: {
+            cursor: "pointer",
+            direction: "ltr",
+            marginBottom: ".5rem",
+            backdropFilter: "blur(8px)",
+            borderRadius: "12px !important",
+            border: "1px solid rgba(72, 68, 74, 0.31)",
+            fontWeight: "bold",
+            fontFamily: "'Vazirmatn', sans-serif",
+            "&:hover": {
+              background: commonColors.transparentBlack,
+            },
+          },
+        },
+      },
+      MuiTypography: {
+        styleOverrides: {
+          root: {
+            fontFamily: "'Vazirmatn', sans-serif",
+          },
+        },
+      },
+      MuiGrid: {
+        styleOverrides: {
+          root: {
+            fontFamily: "'Vazirmatn', sans-serif",
+          },
+        },
+      },
+    },
+    colors: colors,
+  });
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalData, setModalData] = useState(null);
-
-  const handleModalOpen = (app) => {
-    setModalData({
-      title: app.name,
-      videoLink: app.videoLink,
-      tutorialSteps: app.tutorialSteps,
-    });
-    setModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-    setModalData(null);
-  };
-
-  useEffect(() => {
-    fetch(
-      import.meta.env.VITE_JSON_APPS_URL ||
-        "https://raw.githubusercontent.com/radin-mg/public-assets/refs/heads/main/json/os.json"
-    )
-      .then((response) => response.json())
-      .then((data) => setOperatingSystems(data.operatingSystems));
-  }, []);
-
-  return (
-    <>
-      <Grid
-        justifyContent="space-between"
-        sx={{ paddingY: "1rem" }}
-        xs={11}
-        item
-      >
-        <Accordion
-          sx={{
-            direction: lang === "fa" ? "rtl" : "ltr",
-            background: theme.colors.apps[theme.palette.mode],
-            borderRadius: "16px",
-            paddingY: ".4rem",
-            color: "#fff",
-          }}
-        >
-          <AccordionSummary
-            expandIcon={
-              <ArrowDropDownIcon fontSize="large" sx={{ color: "#fff" }} />
-            }
-            aria-controls="panel-os-content"
-            id="panel-os-header"
-          >
-            <Grid container alignItems="center" justifyContent={"space-around"}>
-              <Grid item xs={1} display="flex" justifyContent="center">
-                <Checklist
-                  fontSize="large"
-                  sx={{
-                    marginInlineStart: "1rem",
-                    background: "#fff",
-                    padding: 0.4,
-                    borderRadius: "10px",
-                    color: theme.colors.apps.light,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={10} display="flex" justifyContent="center">
-                <Typography>{t("operatingSystems")}</Typography>
-              </Grid>
-            </Grid>
-          </AccordionSummary>
-          <AccordionDetails>
-            {operatingSystems.map((os, index) => (
-              <Accordion key={index} sx={getAccordionStyles(theme)}>
-                <AccordionSummary
-                  expandIcon={
-                    <ArrowDropDownIcon
-                      sx={{
-                        color: theme.colors.BWColorRevert.light,
-                      }}
-                    />
-                  }
-                  aria-controls={`panel-${os.name}-content`}
-                  id={`panel-${os.name}-header`}
-                >
-                  <Grid container alignItems="center">
-                    <Grid item xs={1} display="flex" justifyContent="center">
-                      {getOsIcon(os.engName)}
-                    </Grid>
-                    <Grid item xs={10} display="flex" justifyContent="center">
-                      <Typography>
-                        {lang === "fa" ? os.name : os.engName}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {os.apps.map((app, appIndex) =>
-                    renderAppAccordion(
-                      app,
-                      appIndex,
-                      lang,
-                      theme,
-                      t,
-                      subLink,
-                      handleModalOpen
-                    )
-                  )}
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </AccordionDetails>
-        </Accordion>
-      </Grid>
-      <TutorialModal
-        open={modalOpen}
-        handleClose={handleModalClose}
-        data={modalData}
-      />
-    </>
-  );
-};
-
-Apps.propTypes = {
-  subLink: PropTypes.string,
-};
-
-export default Apps;
+export default getTheme;
