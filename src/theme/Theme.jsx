@@ -5,7 +5,7 @@ const commonColors = {
   black: "rgba(0, 0, 0, 1)",
   transparentWhite: "rgba(255, 255, 255, 0.3)",
   transparentBlack: "rgba(0, 0, 0, 0.1)",
-  darkGray: "rgba(38, 42, 62, 1)",
+  darkGray: "rgb(18, 18, 18)",
   lightGray: "rgba(243, 244, 254, 1)",
   lightPurple: "rgba(156, 39, 176, 1)",
   darkPurple: "rgba(106, 27, 154, 1)",
@@ -50,8 +50,8 @@ const colors = {
     darkShadow: "rgba(255, 255, 255, 0.1)",
   },
   apps: {
-    light: "rgba(72, 76, 112, 1)",
-    dark: "rgba(117, 122, 166, 1)",
+    light: "rgba(30, 30, 30)",
+    dark: "rgba(30, 30, 30)",
     priceBtn: {
       free: {
         btn: { dark: "rgba(26, 41, 39, 1)", light: "rgba(226, 241, 239, 1)" },
@@ -100,7 +100,7 @@ const colors = {
     slider: "rgba(143, 141, 179, 0.6)",
   },
   box: {
-    dark: "rgba(72, 76, 111, 1)",
+    dark: "rgba(30, 30, 30)",
     light: commonColors.white,
     border: {
       dark: "",
