@@ -199,7 +199,6 @@ const getTheme = (isDarkMode) =>
           },
         },
       },
-
       MuiButton: {
         styleOverrides: {
           root: {
