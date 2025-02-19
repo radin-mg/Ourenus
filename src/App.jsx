@@ -1,4 +1,4 @@
-import { Grid, ThemeProvider, CssBaseline } from "@mui/material";
+import { Grid, ThemeProvider, CssBaseline, useMediaQuery } from "@mui/material";
 import LogoBox from "./components/LogoBox";
 import UserBox from "./components/UserBox";
 import UsageBox from "./components/UsageBox";
@@ -20,20 +20,36 @@ import RadioButtons from "./components/RadioButtons";
 import { Helmet } from "react-helmet";
 
 function App() {
+  // این متغیر حالت تاریک/روشن (Dark/Light) را نگه می‌دارد
+  // مقدار پیش‌فرض آن را false می‌گذاریم تا اگر مرورگر قدیمی بود، اروری ندهد
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // این هوک بررسی می‌کند که سیستم کاربر روی حالت تاریک تنظیم شده است یا خیر
+  // (برای این‌که از MUI و متد useMediaQuery استفاده کنیم)
+  const systemPrefersDark = useMediaQuery("(prefers-color-scheme: dark)");
+
+  // از useEffect استفاده می‌کنیم تا فقط **یک بار** در بدو ورود، isDarkMode را
+  // بر اساس حالت سیستم مقداردهی کنیم.
+  useEffect(() => {
+    setIsDarkMode(systemPrefersDark);
+  }, [systemPrefersDark]);
+
+  // بقیه حالت‌ها و متغیرها
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
+  const [dataLinks, setDataLinks] = useState([]);
 
+  // تم نهایی را بر اساس مقدار isDarkMode می‌سازیم
   const theme = useMemo(() => getTheme(isDarkMode), [isDarkMode]);
 
+  // وقتی زبان کاربر عوض می‌شود
   const handleLanguageChange = (newLanguage) => {
     i18n.changeLanguage(newLanguage);
   };
 
-  const [dataLinks, setDataLinks] = useState([]);
-
+  // درخواست ابتدایی برای گرفتن اطلاعات کاربر
   useEffect(() => {
     GetInfoRequest.getInfo()
       .then((res) => {
@@ -42,6 +58,7 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  // اگر لینک‌هایی در سرور وجود داشته باشد، اینجا آن‌ها را می‌گیریم
   useEffect(() => {
     if (data?.links) {
       const links =
@@ -66,24 +83,22 @@ function App() {
     }
   }, [data]);
 
-
+  // اگر آدرس سابکاربر اشتباه بود یا نیاز به تنظیم داشت
   const getAdjustedUrl = (subURL) => {
     if (import.meta.env.VITE_PANEL_DOMAIN) {
-      return subURL.replace(
-        /https?:\/\/[^/]+/,
-        import.meta.env.VITE_PANEL_DOMAIN
-      );
+      return subURL.replace(/https?:\/\/[^/]+/, import.meta.env.VITE_PANEL_DOMAIN);
     } else if (subURL?.includes("https://")) {
       return subURL;
     }
-
     return `${window.location.origin}${subURL}`;
   };
 
+  // عنوان تب مرورگر را می‌سازیم
   const title = data?.username
     ? `${data.username} Sub Info`
     : `${import.meta.env.VITE_BRAND_NAME || "Ourenus"} Sub Info`;
 
+  // این آبجکت برای خاموش/روشن کردن بخش‌های مختلف استفاده می‌شود
   const isOffSections = useMemo(() => {
     try {
       const envValue = import.meta.env.VITE_OFF_SECTIONS;
@@ -115,7 +130,9 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* ریست و استایل پایهٔ MUI */}
       <CssBaseline />
+      {/* تنظیم title صفحه و meta-description */}
       <Helmet>
         <title>{title}</title>
         <meta
@@ -123,6 +140,7 @@ function App() {
           content="Powered by https://github.com/MatinDehghanian"
         />
       </Helmet>
+
       <Grid container justifyContent={"center"}>
         <Grid
           container
@@ -148,17 +166,22 @@ function App() {
           ) : (
             data && (
               <>
+                {/* این کامپوننت رادیوباتن، در کد اصلی شما هست.
+                    می‌تواند زبان و همچنین isDarkMode را کنترل کند */}
                 <RadioButtons
                   setIsDarkMode={setIsDarkMode}
                   handleLanguageChange={handleLanguageChange}
                 />
+
                 {isOffSections.logoBox && <LogoBox />}
+
                 {isOffSections.userBox && (
                   <UserBox
                     data={data}
                     subLink={getAdjustedUrl(data?.subscription_url)}
                   />
                 )}
+
                 {isOffSections.usageBox && (
                   <UsageBox
                     type="usage"
@@ -169,13 +192,11 @@ function App() {
                     remaining={
                       data?.data_limit === null
                         ? formatTraffic(null, t)
-                        : formatTraffic(
-                            data?.data_limit - data?.used_traffic,
-                            t
-                          )
+                        : formatTraffic(data?.data_limit - data?.used_traffic, t)
                     }
                   />
                 )}
+
                 {isOffSections.timeBox && (
                   <UsageBox
                     type="time"
@@ -188,9 +209,11 @@ function App() {
                     )}
                   />
                 )}
+
                 {isOffSections.appsBox && (
                   <Apps subLink={getAdjustedUrl(data?.subscription_url)} />
                 )}
+
                 {isOffSections.configs && (
                   <Configs
                     title={t("configsList")}
@@ -216,8 +239,7 @@ function App() {
                         fontSize="large"
                         sx={{
                           marginInlineStart: "1rem",
-                          color:
-                            theme.colors.configs.revert[theme.palette.mode],
+                          color: theme.colors.configs.revert[theme.palette.mode],
                         }}
                       />
                     }
@@ -228,8 +250,7 @@ function App() {
                       padding: ".3rem",
                       background: theme.colors.glassColor,
                       "&:hover": {
-                        background:
-                          theme.colors.configs.revert[theme.palette.mode],
+                        background: theme.colors.configs.revert[theme.palette.mode],
                       },
                     }}
                     liStyle={{
@@ -242,6 +263,7 @@ function App() {
             )
           )}
         </Grid>
+
         <ToastContainer
           position="top-right"
           theme="colored"
@@ -264,8 +286,7 @@ export default App;
 
 function decodeBase64(encodedString) {
   try {
-    const decodedString = atob(encodedString);
-    return decodedString;
+    return atob(encodedString);
   } catch (error) {
     console.error("Failed to decode base64:", error);
     return "";
