@@ -50,9 +50,8 @@ const colors = {
     darkShadow: "rgba(255, 255, 255, 0.1)",
   },
   apps: {
-    light: "rgb(152, 152, 152)",
-    dark: "rgba(30, 30, 30, 1)",
-    text: { dark: commonColors.white, light: commonColors.black },
+    light: "rgb(67, 67, 67)",
+    dark: "rgb(51, 51, 51)",
     priceBtn: {
       free: {
         btn: { dark: "rgba(26, 41, 39, 1)", light: "rgba(226, 241, 239, 1)" },
@@ -78,7 +77,7 @@ const colors = {
     },
   },
   configs: {
-    light: "rgb(186, 191, 255)",
+    light: "rgb(91, 94, 114)",
     dark: "rgba(72, 76, 122, 1)",
     revert: {
       dark: commonColors.white,
