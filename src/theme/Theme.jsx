@@ -77,7 +77,7 @@ const colors = {
     },
   },
   configs: {
-    light: "rgb(177, 180, 203)",
+    light: "rgb(175, 178, 211)",
     dark: "rgba(72, 76, 122, 1)",
     revert: {
       dark: commonColors.white,
