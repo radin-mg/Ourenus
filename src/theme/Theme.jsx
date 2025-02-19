@@ -50,8 +50,8 @@ const colors = {
     darkShadow: "rgba(255, 255, 255, 0.1)",
   },
   apps: {
-    light: "rgba(30, 30, 30)",
-    dark: "rgba(30, 30, 30)",
+    light: "rgb(37, 37, 37)",
+    dark: "rgba(30, 30, 30, 1)",
     priceBtn: {
       free: {
         btn: { dark: "rgba(26, 41, 39, 1)", light: "rgba(226, 241, 239, 1)" },
@@ -87,20 +87,20 @@ const colors = {
   capsuleBtn: {
     active: {
       dark: commonColors.white,
-      light: "rgba(82, 88, 125, 1)",
+      light: "rgba(45,45,45, 1)",
     },
     notActive: {
       dark: commonColors.white,
-      light: "rgba(121, 124, 146, 1)",
+      light: "rgb(36, 36, 36)",
     },
     background: {
-      dark: "rgba(72, 76, 111, 1)",
+      dark: "rgba(45,45,45, 1)",
       light: commonColors.lightGray,
     },
     slider: "rgba(143, 141, 179, 0.6)",
   },
   box: {
-    dark: "rgba(30, 30, 30)",
+    dark: "rgba(30, 30, 30, 1)",
     light: commonColors.white,
     border: {
       dark: "",
