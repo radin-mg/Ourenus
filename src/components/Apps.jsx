@@ -213,24 +213,16 @@ const renderAppAccordion = (
                 sx={{
                   borderRadius: "50px",
                   backgroundColor:
-                    app?.price === "0"
+                    app.price === "0"
                       ? theme.colors.apps.priceBtn.free.btn[theme.palette.mode]
-                      : app?.isAd
+                      : app.isAd
                       ? theme.colors.apps.priceBtn.ad.btn[theme.palette.mode]
-                      : app?.price === "suggestion"
-                      ? theme.colors.apps.priceBtn.suggestion.btn[
-                          theme.palette.mode
-                        ]
                       : theme.colors.apps.priceBtn.paid.btn[theme.palette.mode],
                   color:
-                    app?.price === "0"
+                    app.price === "0"
                       ? theme.colors.apps.priceBtn.free.text[theme.palette.mode]
-                      : app?.isAd
+                      : app.isAd
                       ? theme.colors.apps.priceBtn.ad.text[theme.palette.mode]
-                      : app?.price === "suggestion"
-                      ? theme.colors.apps.priceBtn.suggestion.text[
-                          theme.palette.mode
-                        ]
                       : theme.colors.apps.priceBtn.paid.text[
                           theme.palette.mode
                         ],
@@ -240,10 +232,8 @@ const renderAppAccordion = (
               >
                 {app.price === "0"
                   ? t("free")
-                  : app?.isAd
+                  : app.isAd
                   ? t("ad")
-                  : app.price === "suggestion"
-                  ? t("suggestion")
                   : `${app.price} $`}
               </Button>
             )}
@@ -256,7 +246,7 @@ const renderAppAccordion = (
             {lang === "fa" ? app.faDescription : app.description}
           </Typography>
           {app.downloadLink &&
-            !app?.isAd &&
+            !app.isAd &&
             renderButtonGrid(
               <ArrowCircleDownIcon fontSize="medium" />,
               "download",
@@ -264,7 +254,7 @@ const renderAppAccordion = (
               t,
               app.downloadLink
             )}
-          {app?.isAd &&
+          {app.isAd &&
             renderButtonGrid(
               <AdUnits fontSize="medium" />,
               app.adBtnText,
