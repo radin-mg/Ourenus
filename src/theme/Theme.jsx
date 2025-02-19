@@ -48,9 +48,10 @@ const colors = {
   rgb: {
     lightShadow: "rgba(0, 0, 0, 0.1)",
     darkShadow: "rgba(255, 255, 255, 0.1)",
+    text: { dark: commonColors.white, light: commonColors.black },
   },
   apps: {
-    light: "rgb(136, 136, 136)",
+    light: "rgb(152, 152, 152)",
     dark: "rgba(30, 30, 30, 1)",
     priceBtn: {
       free: {
