@@ -123,7 +123,7 @@ const renderButtonGrid = (
   const openShadowrocketURL = (subLink) => {
     const encodedURL = btoa(subLink);
     const shadowrocketLink = "sub://" + encodedURL;
-    window.location.href = shadowrocketLink; // Redirect to the Shadowrocket link
+    window.location.href = shadowrocketLink;
   };
 
   return (
@@ -205,33 +205,48 @@ const renderAppAccordion = (
             alignItems="center"
           >
             <Typography>{app.name}</Typography>
-            <Button
-              variant="contained"
-              color="textSecondary"
-              sx={{
-                borderRadius: "50px",
-                backgroundColor:
-                  app?.price === "0"
-                    ? theme.colors.apps.priceBtn.free.btn[theme.palette.mode]
-                    : app?.isAd
-                    ? theme.colors.apps.priceBtn.ad.btn[theme.palette.mode]
-                    : theme.colors.apps.priceBtn.paid.btn[theme.palette.mode],
-                color:
-                  app?.price === "0"
-                    ? theme.colors.apps.priceBtn.free.text[theme.palette.mode]
-                    : app?.isAd
-                    ? theme.colors.apps.priceBtn.ad.text[theme.palette.mode]
-                    : theme.colors.apps.priceBtn.paid.text[theme.palette.mode],
-                textTransform: "capitalize",
-                boxShadow: "0 0 3px 0px #99bbaf",
-              }}
-            >
-              {app.price === "0"
-                ? t("free")
-                : app?.isAd
-                ? t("ad")
-                : `${app.price} $`}
-            </Button>
+
+            {app.price !== "-1" && (
+              <Button
+                variant="contained"
+                color="textSecondary"
+                sx={{
+                  borderRadius: "50px",
+                  backgroundColor:
+                    app?.price === "0"
+                      ? theme.colors.apps.priceBtn.free.btn[theme.palette.mode]
+                      : app?.isAd
+                      ? theme.colors.apps.priceBtn.ad.btn[theme.palette.mode]
+                      : app?.price === "suggestion"
+                      ? theme.colors.apps.priceBtn.suggestion.btn[
+                          theme.palette.mode
+                        ]
+                      : theme.colors.apps.priceBtn.paid.btn[theme.palette.mode],
+                  color:
+                    app?.price === "0"
+                      ? theme.colors.apps.priceBtn.free.text[theme.palette.mode]
+                      : app?.isAd
+                      ? theme.colors.apps.priceBtn.ad.text[theme.palette.mode]
+                      : app?.price === "suggestion"
+                      ? theme.colors.apps.priceBtn.suggestion.text[
+                          theme.palette.mode
+                        ]
+                      : theme.colors.apps.priceBtn.paid.text[
+                          theme.palette.mode
+                        ],
+                  textTransform: "capitalize",
+                  boxShadow: "0 0 3px 0px #99bbaf",
+                }}
+              >
+                {app.price === "0"
+                  ? t("free")
+                  : app?.isAd
+                  ? t("ad")
+                  : app.price === "suggestion"
+                  ? t("suggestion")
+                  : `${app.price} $`}
+              </Button>
+            )}
           </Grid>
         </Grid>
       </AccordionSummary>
@@ -410,6 +425,7 @@ const Apps = ({ subLink }) => {
     </>
   );
 };
+
 Apps.propTypes = {
   subLink: PropTypes.string,
 };
