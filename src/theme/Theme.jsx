@@ -189,8 +189,8 @@ const getTheme = (isDarkMode) =>
           root: {
             backdropFilter: "blur(8px)",
             borderRadius: "16px !important",
-            border: isDarkMode ? "1px solid rgba(255, 255, 255, 0.42)" : "1px solid rgba(255, 255, 255, 0.42)",
-            color: isDarkMode ? commonColors.white : commonColors.white,
+            border: isDarkMode ? "0.25px solid rgba(255, 255, 255, 0.42)" : "0.25px solid rgba(255, 255, 255, 0.42)",
+            color: isDarkMode ? commonColors.black : commonColors.white,
             fontWeight: "bold",
             fontFamily: "'Vazirmatn', sans-serif",
             "&:before": {
