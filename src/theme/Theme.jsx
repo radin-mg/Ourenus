@@ -169,7 +169,7 @@ const colors = {
     dark: "rgba(204, 204, 204, 1)",
   },
   background: {
-    dark: commonColors.darkGray,
+    dark: commonColors.black,
     light: commonColors.lightGray,
   },
 };
