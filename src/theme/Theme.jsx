@@ -158,7 +158,7 @@ const colors = {
   glassColor: commonColors.transparentWhite,
   BWColor: {
     light: commonColors.black,
-    dark: commonColors.white,
+    dark: commonColors.black,
   },
   BWColorRevert: {
     light: commonColors.white,
