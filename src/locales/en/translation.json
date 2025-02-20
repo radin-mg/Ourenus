@@ -17,8 +17,8 @@
     "limited": "Limited"
   },
   "support": "Support",
-  "userPanelTitle": "{brandName}'s User Panel",
-  "userPanelWelcome": "Welcome to {brandName}'s user panel.",
+  "userPanelTitle": "Information and Connection Method",
+  "userPanelWelcome": "Using the menus below, you can connect based on your operating system"
   "operatingSystems": "Operating Systems",
   "configuration": "Add to App",
   "download": "Download",
